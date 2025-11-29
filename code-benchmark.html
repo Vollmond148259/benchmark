@@ -76,7 +76,7 @@ const sum = arr.reduce((acc, value) =&gt; acc + value, 0);</textarea>
               min="1"
               max="5_000_000"
               step="1"
-              value="100000"
+              value="1000"
             />
             <button
               type="button"
@@ -104,19 +104,29 @@ const sum = arr.reduce((acc, value) =&gt; acc + value, 0);</textarea>
       </div>
     </section>
 
-    <section class="card">
-      <h2>Результаты бенчмарка</h2>
-      <div id="results" class="results">Здесь появятся результаты выполнения кода.</div>
-      <div class="hint">
-        Запустите тест несколько раз и попробуйте разные браузеры (Chrome, Firefox, Safari), чтобы увидеть, как
-        движок влияет на производительность.
-      </div>
+    <section class="results-logs-row">
+      <section class="card results-card">
+        <h2>Результаты бенчмарка</h2>
+        <div id="results" class="results">Здесь появятся результаты выполнения кода.</div>
+        <div class="hint">
+          Запустите тест несколько раз и попробуйте разные браузеры (Chrome, Firefox, Safari), чтобы увидеть, как
+          движок влияет на производительность.
+        </div>
+      </section>
+
+      <section class="card logs-card">
+        <div class="logs-header">Логи консоли</div>
+        <div id="console-output" class="console-output">
+          Здесь появится вывод <code>console.log</code> и <code>console.debug</code> за последний запуск.
+        </div>
+      </section>
     </section>
   </main>
 
   <!-- CodeMirror JS -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/codemirror.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/mode/javascript/javascript.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/addon/edit/closebrackets.min.js"></script>
 
   <script src="code-benchmark.js"></script>
 </body>

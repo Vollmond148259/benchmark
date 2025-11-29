@@ -259,6 +259,41 @@ input[type="number"]::-webkit-inner-spin-button {
   white-space: pre-wrap;
 }
 
+.results-logs-row {
+  display: flex;
+  gap: 18px;
+  flex-wrap: wrap;
+}
+
+.results-card,
+.logs-card {
+  flex: 1 1 260px;
+  min-width: 0;
+}
+
+.logs-header {
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: #9ca3af;
+  margin-bottom: 6px;
+}
+
+.console-output {
+  margin-top: 4px;
+  padding: 10px 12px;
+  border-radius: 10px;
+  background: rgba(15, 23, 42, 0.95);
+  border: 1px solid rgba(30, 64, 175, 0.7);
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+  font-size: 0.8rem;
+  color: #e5e7eb;
+  white-space: pre-wrap;
+  max-height: 240px;
+  overflow: auto;
+  box-sizing: border-box;
+}
+
 .hint {
   margin-top: 10px;
   font-size: 0.78rem;

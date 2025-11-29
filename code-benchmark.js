@@ -4,6 +4,7 @@
   const iterationsEl = document.getElementById("iterations");
   const runBtn = document.getElementById("run-benchmark");
   const resultsEl = document.getElementById("results");
+  const consoleOutputEl = document.getElementById("console-output");
   const themeSelectEl = document.getElementById("editor-theme");
   const iterationsArrowUp = document.querySelector(".number-input-arrow--up");
   const iterationsArrowDown = document.querySelector(
@@ -19,6 +20,7 @@
     indentWithTabs: false,
     lineWrapping: true,
     theme: "material-darker",
+    autoCloseBrackets: true,
   });
 
   const codeBEditor = CodeMirror.fromTextArea(codeBTextarea, {
@@ -29,10 +31,17 @@
     indentWithTabs: false,
     lineWrapping: true,
     theme: "material-darker",
+    autoCloseBrackets: true,
   });
 
   function setResults(text) {
     resultsEl.textContent = text;
+  }
+
+  function setConsoleOutput(text) {
+    if (!consoleOutputEl) return;
+    consoleOutputEl.textContent = text;
+    consoleOutputEl.scrollTop = consoleOutputEl.scrollHeight;
   }
 
   function scrollToResults() {
@@ -70,7 +79,8 @@
 
   function buildFunction(code, label) {
     try {
-      const fn = new Function(code);
+      // Передаём объект console как аргумент, чтобы можно было подменять его
+      const fn = new Function("console", code);
       return { fn, error: null };
     } catch (e) {
       return {
@@ -80,11 +90,12 @@
     }
   }
 
-  function measure(fn, iterations, label) {
+  function measure(fn, iterations, label, consoleForFn) {
     const start = performance.now();
     try {
       for (let i = 0; i < iterations; i++) {
-        fn();
+        // Передаём наш "подменённый" console внутрь кода пользователя
+        fn(consoleForFn);
       }
     } catch (e) {
       return {
@@ -115,6 +126,13 @@
       "Выполняется бенчмарк...\nЭто может занять немного времени при большом числе итераций."
     );
 
+    // Очищаем лог консоли перед новым запуском
+    if (consoleOutputEl) {
+      setConsoleOutput(
+        "Ожидание вывода из console.log / console.debug во время текущего запуска..."
+      );
+    }
+
     // Небольшая задержка, чтобы обновить UI перед тяжёлой работой
     setTimeout(() => {
       const buildA = buildFunction(codeA, "варианта A");
@@ -125,18 +143,110 @@
         if (buildA.error) msg += "- " + buildA.error + "\n";
         if (buildB.error) msg += "- " + buildB.error + "\n";
         setResults(msg.trimEnd());
+        if (consoleOutputEl) {
+          setConsoleOutput(
+            "Из‑за ошибок в коде бенчмарк не был запущен, вывод консоли отсутствует."
+          );
+        }
         scrollToResults();
         return;
       }
 
-      const resultA = measure(buildA.fn, iterations, "варианта A");
-      const resultB = measure(buildB.fn, iterations, "варианта B");
+      // Буфер для логов текущего запуска
+      const consoleLines = [];
+      const nativeConsole = window.console || {};
+
+      function formatConsoleArg(arg) {
+        if (typeof arg === "string") return arg;
+        if (typeof arg === "number" || typeof arg === "boolean") {
+          return String(arg);
+        }
+        if (arg instanceof Error) {
+          return arg.stack || arg.message || String(arg);
+        }
+        try {
+          return JSON.stringify(arg);
+        } catch (e) {
+          return String(arg);
+        }
+      }
+
+      function pushConsoleLine(kind, variantLabel, args) {
+        const time = new Date().toLocaleTimeString("ru-RU");
+        const text =
+          "[" +
+          time +
+          "] [" +
+          variantLabel +
+          "] [" +
+          kind +
+          "] " +
+          args.map(formatConsoleArg).join(" ");
+        consoleLines.push(text);
+        if (consoleOutputEl) {
+          setConsoleOutput(consoleLines.join("\n"));
+        }
+      }
+
+      function makeInstrumentedConsole(variantLabel) {
+        return {
+          log: function (...args) {
+            if (typeof nativeConsole.log === "function") {
+              nativeConsole.log.apply(nativeConsole, args);
+            }
+            pushConsoleLine("log", variantLabel, args);
+          },
+          debug: function (...args) {
+            if (typeof nativeConsole.debug === "function") {
+              nativeConsole.debug.apply(nativeConsole, args);
+            } else if (typeof nativeConsole.log === "function") {
+              nativeConsole.log.apply(nativeConsole, args);
+            }
+            pushConsoleLine("debug", variantLabel, args);
+          },
+          info: function (...args) {
+            if (typeof nativeConsole.info === "function") {
+              nativeConsole.info.apply(nativeConsole, args);
+            } else if (typeof nativeConsole.log === "function") {
+              nativeConsole.log.apply(nativeConsole, args);
+            }
+            pushConsoleLine("info", variantLabel, args);
+          },
+          warn: function (...args) {
+            if (typeof nativeConsole.warn === "function") {
+              nativeConsole.warn.apply(nativeConsole, args);
+            } else if (typeof nativeConsole.log === "function") {
+              nativeConsole.log.apply(nativeConsole, args);
+            }
+            pushConsoleLine("warn", variantLabel, args);
+          },
+          error: function (...args) {
+            if (typeof nativeConsole.error === "function") {
+              nativeConsole.error.apply(nativeConsole, args);
+            } else if (typeof nativeConsole.log === "function") {
+              nativeConsole.log.apply(nativeConsole, args);
+            }
+            pushConsoleLine("error", variantLabel, args);
+          },
+        };
+      }
+
+      const consoleA = makeInstrumentedConsole("A");
+      const consoleB = makeInstrumentedConsole("B");
+
+      const resultA = measure(buildA.fn, iterations, "варианта A", consoleA);
+      const resultB = measure(buildB.fn, iterations, "варианта B", consoleB);
 
       if (resultA.error || resultB.error) {
         let msg = "Во время выполнения кода произошли ошибки:\n\n";
         if (resultA.error) msg += "- " + resultA.error + "\n";
         if (resultB.error) msg += "- " + resultB.error + "\n";
         setResults(msg.trimEnd());
+        if (consoleOutputEl && consoleLines.length === 0) {
+          setConsoleOutput(
+            "Во время выполнения произошли ошибки, но вызовов console.log / console.debug не было."
+          );
+        }
         scrollToResults();
         return;
       }
@@ -194,6 +304,12 @@
       }
 
       setResults(lines.join("\n"));
+
+      if (consoleOutputEl && consoleLines.length === 0) {
+        setConsoleOutput(
+          "За этот запуск вызовов console.log / console.debug не было."
+        );
+      }
       scrollToResults();
     }, 30);
   }
