@@ -5,6 +5,10 @@
   const runBtn = document.getElementById("run-benchmark");
   const resultsEl = document.getElementById("results");
   const themeSelectEl = document.getElementById("editor-theme");
+  const iterationsArrowUp = document.querySelector(".number-input-arrow--up");
+  const iterationsArrowDown = document.querySelector(
+    ".number-input-arrow--down"
+  );
 
   // Инициализация CodeMirror для обоих редакторов
   const codeAEditor = CodeMirror.fromTextArea(codeATextarea, {
@@ -47,6 +51,21 @@
     if (n > 5000000) n = 5000000;
     iterationsEl.value = String(n);
     return n;
+  }
+
+  function stepIterations(delta) {
+    if (!iterationsEl) return;
+    const step = Number(iterationsEl.step) || 1;
+    const steps = delta > 0 ? 1 : -1;
+    if (typeof iterationsEl.stepUp === "function" && steps > 0) {
+      iterationsEl.stepUp(steps);
+    } else if (typeof iterationsEl.stepDown === "function" && steps < 0) {
+      iterationsEl.stepDown(-steps);
+    } else {
+      const current = Number(iterationsEl.value.replace(/\s/g, "")) || 0;
+      iterationsEl.value = String(current + steps * step);
+    }
+    parseIterations();
   }
 
   function buildFunction(code, label) {
@@ -190,19 +209,34 @@
     });
   }
 
-  // Запуск по Ctrl/Cmd+Enter в любом редакторе CodeMirror
-  function attachCtrlEnter(editor) {
+  // Запуск по Ctrl/Cmd+Enter или Ctrl/Cmd+S в любом редакторе CodeMirror
+  function attachRunShortcuts(editor) {
     editor.on("keydown", function (cm, event) {
+      const key = event.key || "";
       const isEnter =
-        event.key === "Enter" || event.keyCode === 13 || event.code === "Enter";
+        key === "Enter" || event.keyCode === 13 || event.code === "Enter";
+      const isS = key === "s" || key === "S";
+      const hasMetaOrCtrl = event.metaKey || event.ctrlKey;
 
-      if ((event.metaKey || event.ctrlKey) && isEnter) {
+      if (hasMetaOrCtrl && (isEnter || isS)) {
         event.preventDefault();
         onRunBenchmark();
       }
     });
   }
 
-  attachCtrlEnter(codeAEditor);
-  attachCtrlEnter(codeBEditor);
+  attachRunShortcuts(codeAEditor);
+  attachRunShortcuts(codeBEditor);
+
+  // Интерактивные кастомные стрелки для поля с количеством итераций
+  if (iterationsArrowUp) {
+    iterationsArrowUp.addEventListener("click", function () {
+      stepIterations(1);
+    });
+  }
+  if (iterationsArrowDown) {
+    iterationsArrowDown.addEventListener("click", function () {
+      stepIterations(-1);
+    });
+  }
 })();

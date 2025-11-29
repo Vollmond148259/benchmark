@@ -29,7 +29,8 @@
       <h1 class="header-title">JS Benchmark Playground</h1>
       <p class="header-subtitle">
         Сравнивайте производительность двух вариантов JavaScript‑кода. Отредактируйте оба блока и нажмите
-        <code>Запустить бенчмарк</code>, чтобы увидеть статистику.
+        <code>Запустить бенчмарк</code>, чтобы увидеть статистику. Также вы можете запустить бенчмарк с помощью
+        сочетаний клавиш <code>Cmd+S</code> (macOS) или <code>Ctrl+S</code> (Windows/Linux).
       </p>
     </header>
 
@@ -57,27 +58,41 @@ const sum = arr.reduce((acc, value) =&gt; acc + value, 0);</textarea>
     </section>
 
     <section class="card">
+      <div class="field-group">
+        <span class="field-label">Тема редактора</span>
+        <select id="editor-theme" class="select-input">
+          <option value="material-darker" selected>Тёмная — Material Darker</option>
+          <option value="dracula">Тёмная — Dracula</option>
+          <option value="neo">Светлая — Neo</option>
+        </select>
+      </div>
+    </section>
+
+    <section class="card">
       <div class="controls-row">
         <div class="field-group">
           <span class="field-label">Количество итераций бенчмарка</span>
-          <input
-            id="iterations"
-            class="number-input"
-            type="number"
-            min="1"
-            max="5_000_000"
-            step="1"
-            value="100000"
-          />
-        </div>
-
-        <div class="field-group">
-          <span class="field-label">Тема редактора</span>
-          <select id="editor-theme" class="select-input">
-            <option value="material-darker" selected>Тёмная — Material Darker</option>
-            <option value="dracula">Тёмная — Dracula</option>
-            <option value="neo">Светлая — Neo</option>
-          </select>
+          <div class="number-input-wrapper">
+            <input
+              id="iterations"
+              class="number-input"
+              type="number"
+              min="1"
+              max="5_000_000"
+              step="1"
+              value="100000"
+            />
+            <button
+              type="button"
+              class="number-input-arrow number-input-arrow--up"
+              aria-label="Увеличить количество итераций"
+            ></button>
+            <button
+              type="button"
+              class="number-input-arrow number-input-arrow--down"
+              aria-label="Уменьшить количество итераций"
+            ></button>
+          </div>
         </div>
 
         <button id="run-benchmark">Запустить бенчмарк</button>
