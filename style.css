@@ -127,7 +127,7 @@ button:active {
   margin-bottom: 12px;
 }
 
-.code-input {
+/* .code-input {
   width: 100%;
   min-height: 230px;
   background: radial-gradient(circle at top left, #020617, #020617 60%, #020617);
@@ -142,15 +142,15 @@ button:active {
   line-height: 1.45;
   outline: none;
   box-shadow: inset 0 0 0 1px rgba(15, 23, 42, 0.9);
-}
+} */
 
-.code-input:focus {
+/* .code-input:focus {
   border-color: #4f46e5;
   box-shadow:
     0 0 0 1px rgba(129, 140, 248, 0.8),
     0 0 25px rgba(79, 70, 229, 0.45),
     inset 0 0 0 1px rgba(15, 23, 42, 0.9);
-}
+} */
 
 .controls-row {
   display: flex;
@@ -235,6 +235,7 @@ button:active {
   width: 100%;
   min-height: 230px;
   border-radius: 14px;
+  border: 1px solid rgba(30, 64, 175, 0.8);
   box-sizing: border-box;
   padding: 8px 0;
   font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
@@ -273,6 +274,15 @@ button:active {
   .header {
     text-align: left;
   }
+}
+
+/* Убираем clip-path у редактора в темах darker dracula neo */
+.CodeMirror.cm-s-material-darker,
+.CodeMirror.cm-s-dracula,
+.CodeMirror.cm-s-neo,
+.cm-s-material-darker.CodeMirror-wrap,
+.cm-s-material-darker .CodeMirror-wrap {
+  clip-path: none !important;
 }
 
 
