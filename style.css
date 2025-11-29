@@ -210,20 +210,36 @@ button:active {
   color: #9ca3af;
 }
 
+.select-input {
+  background: rgba(15, 23, 42, 0.9);
+  border-radius: 999px;
+  border: 1px solid rgba(30, 64, 175, 0.8);
+  color: #e5e7eb;
+  padding: 7px 12px;
+  font-size: 0.9rem;
+  box-sizing: border-box;
+  outline: none;
+  box-shadow: inset 0 0 0 1px rgba(15, 23, 42, 0.9);
+}
+
+.select-input:focus {
+  border-color: #4f46e5;
+  box-shadow:
+    0 0 0 1px rgba(129, 140, 248, 0.8),
+    0 0 20px rgba(79, 70, 229, 0.5),
+    inset 0 0 0 1px rgba(15, 23, 42, 0.9);
+}
+
 /* CodeMirror integration */
 .CodeMirror {
   width: 100%;
   min-height: 230px;
-  background: radial-gradient(circle at top left, #020617, #020617 60%, #020617);
-  color: #e5e7eb;
   border-radius: 14px;
-  border: 1px solid rgba(30, 64, 175, 0.65);
   box-sizing: border-box;
   padding: 8px 0;
   font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
   font-size: 0.9rem;
   line-height: 1.45;
-  box-shadow: inset 0 0 0 1px rgba(15, 23, 42, 0.9);
 }
 
 .CodeMirror-focused {
@@ -245,32 +261,6 @@ button:active {
 
 .CodeMirror-cursor {
   border-left: 2px solid #e5e7eb;
-}
-
-.cm-keyword {
-  color: #a78bfa;
-}
-
-.cm-variable,
-.cm-variable-2,
-.cm-def {
-  color: #e5e7eb;
-}
-
-.cm-number {
-  color: #fbbf24;
-}
-
-.cm-string {
-  color: #34d399;
-}
-
-.cm-comment {
-  color: #6b7280;
-}
-
-.cm-operator {
-  color: #60a5fa;
 }
 
 @media (max-width: 768px) {

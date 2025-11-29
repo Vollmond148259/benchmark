@@ -4,6 +4,7 @@
   const iterationsEl = document.getElementById("iterations");
   const runBtn = document.getElementById("run-benchmark");
   const resultsEl = document.getElementById("results");
+  const themeSelectEl = document.getElementById("editor-theme");
 
   // Инициализация CodeMirror для обоих редакторов
   const codeAEditor = CodeMirror.fromTextArea(codeATextarea, {
@@ -13,6 +14,7 @@
     indentUnit: 2,
     indentWithTabs: false,
     lineWrapping: true,
+    theme: "material-darker",
   });
 
   const codeBEditor = CodeMirror.fromTextArea(codeBTextarea, {
@@ -22,6 +24,7 @@
     indentUnit: 2,
     indentWithTabs: false,
     lineWrapping: true,
+    theme: "material-darker",
   });
 
   function setResults(text) {
@@ -177,6 +180,15 @@
   }
 
   runBtn.addEventListener("click", onRunBenchmark);
+
+  // Переключение темы редактора
+  if (themeSelectEl) {
+    themeSelectEl.addEventListener("change", function (event) {
+      const theme = event.target.value || "material-darker";
+      codeAEditor.setOption("theme", theme);
+      codeBEditor.setOption("theme", theme);
+    });
+  }
 
   // Запуск по Ctrl/Cmd+Enter в любом редакторе CodeMirror
   function attachCtrlEnter(editor) {

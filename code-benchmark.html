@@ -9,6 +9,19 @@
     rel="stylesheet"
     href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/codemirror.min.css"
   />
+  <!-- CodeMirror themes -->
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/theme/material-darker.min.css"
+  />
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/theme/dracula.min.css"
+  />
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/theme/neo.min.css"
+  />
 </head>
 <body>
   <main class="layout">
@@ -56,6 +69,15 @@ const sum = arr.reduce((acc, value) =&gt; acc + value, 0);</textarea>
             step="1"
             value="100000"
           />
+        </div>
+
+        <div class="field-group">
+          <span class="field-label">Тема редактора</span>
+          <select id="editor-theme" class="select-input">
+            <option value="material-darker" selected>Тёмная — Material Darker</option>
+            <option value="dracula">Тёмная — Dracula</option>
+            <option value="neo">Светлая — Neo</option>
+          </select>
         </div>
 
         <button id="run-benchmark">Запустить бенчмарк</button>
