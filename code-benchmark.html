@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <title>JS Benchmark Playground</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <main class="layout">
+    <header class="header">
+      <h1 class="header-title">JS Benchmark Playground</h1>
+      <p class="header-subtitle">
+        Сравнивайте производительность двух вариантов JavaScript‑кода. Отредактируйте оба блока и нажмите
+        <code>Запустить бенчмарк</code>, чтобы увидеть статистику.
+      </p>
+    </header>
+
+    <section class="editors-row">
+      <section class="card editor-card">
+        <h2>Вариант A</h2>
+        <p class="subtitle">
+          Например, классический цикл <code>for</code>, который суммирует элементы массива.
+        </p>
+        <textarea id="code-a" class="code-input" spellcheck="false">const arr = new Array(1_000).fill(1);
+let sum = 0;
+for (let i = 0; i &lt; arr.length; i++) {
+  sum += arr[i];
+}</textarea>
+      </section>
+
+      <section class="card editor-card">
+        <h2>Вариант B</h2>
+        <p class="subtitle">
+          Альтернативная реализация той же задачи, например <code>Array.prototype.reduce</code>.
+        </p>
+        <textarea id="code-b" class="code-input" spellcheck="false">const arr = new Array(1_000).fill(1);
+const sum = arr.reduce((acc, value) =&gt; acc + value, 0);</textarea>
+      </section>
+    </section>
+
+    <section class="card">
+      <div class="controls-row">
+        <div class="field-group">
+          <span class="field-label">Количество итераций бенчмарка</span>
+          <input
+            id="iterations"
+            class="number-input"
+            type="number"
+            min="1"
+            max="5_000_000"
+            step="1"
+            value="100000"
+          />
+        </div>
+
+        <button id="run-benchmark">Запустить бенчмарк</button>
+
+        <p style="margin: 0; font-size: 0.8rem; color: #6b7280;">
+          Совет: начните с меньшего числа итераций, если браузер «подвисает».
+        </p>
+      </div>
+    </section>
+
+    <section class="card">
+      <h2>Результаты бенчмарка</h2>
+      <div id="results" class="results">Здесь появятся результаты выполнения кода.</div>
+      <div class="hint">
+        Запустите тест несколько раз и попробуйте разные браузеры (Chrome, Firefox, Safari), чтобы увидеть, как
+        движок влияет на производительность.
+      </div>
+    </section>
+  </main>
+
+  <script src="code-benchmark.js"></script>
+</body>
+</html>
+
+
