@@ -10,6 +10,7 @@
   const iterationsArrowDown = document.querySelector(
     ".number-input-arrow--down"
   );
+  const cyrillicSoundToggle = document.getElementById("cyrillic-sound-toggle");
 
   // Инициализация CodeMirror для обоих редакторов
   const codeAEditor = CodeMirror.fromTextArea(codeATextarea, {
@@ -33,6 +34,43 @@
     theme: "material-darker",
     autoCloseBrackets: true,
   });
+
+  let beepAudioContext = null;
+
+  function playBeepForCyrillic() {
+    // Проверяем, включена ли опция звукового сигнала
+    if (!cyrillicSoundToggle || !cyrillicSoundToggle.checked) return;
+
+    const AudioCtx = window.AudioContext || window.webkitAudioContext;
+    if (!AudioCtx) return;
+
+    if (!beepAudioContext) {
+      try {
+        beepAudioContext = new AudioCtx();
+      } catch (e) {
+        return;
+      }
+    }
+
+    const ctx = beepAudioContext;
+    const duration = 0.09;
+    const now = ctx.currentTime;
+
+    const oscillator = ctx.createOscillator();
+    const gain = ctx.createGain();
+
+    oscillator.type = "square";
+    oscillator.frequency.value = 880;
+
+    gain.gain.setValueAtTime(0.18, now);
+    gain.gain.exponentialRampToValueAtTime(0.001, now + duration);
+
+    oscillator.connect(gain);
+    gain.connect(ctx.destination);
+
+    oscillator.start(now);
+    oscillator.stop(now + duration);
+  }
 
   function setResults(text) {
     resultsEl.textContent = text;
@@ -343,6 +381,20 @@
 
   attachRunShortcuts(codeAEditor);
   attachRunShortcuts(codeBEditor);
+
+  // Звуковой сигнал при вводе кириллицы в редакторы
+  function attachCyrillicBeep(editor) {
+    editor.on("change", function (_cm, changeObj) {
+      if (!changeObj || !changeObj.text) return;
+      const inserted = changeObj.text.join("\n");
+      if (/[А-Яа-яЁё]/.test(inserted)) {
+        playBeepForCyrillic();
+      }
+    });
+  }
+
+  attachCyrillicBeep(codeAEditor);
+  attachCyrillicBeep(codeBEditor);
 
   // Интерактивные кастомные стрелки для поля с количеством итераций
   if (iterationsArrowUp) {
