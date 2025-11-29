@@ -162,9 +162,8 @@ button:active {
 .field-group {
   display: flex;
   flex-direction: column;
-  gap: 4px;
+  gap: 6px;
   font-size: 0.85rem;
-  max-width:200px;
 }
 
 .field-label {
