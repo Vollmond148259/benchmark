@@ -127,31 +127,6 @@ button:active {
   margin-bottom: 12px;
 }
 
-.code-input {
-  width: 100%;
-  min-height: 230px;
-  background: radial-gradient(circle at top left, #020617, #020617 60%, #020617);
-  color: #e5e7eb;
-  border-radius: 14px;
-  border: 1px solid rgba(30, 64, 175, 0.65);
-  box-sizing: border-box;
-  padding: 12px 14px;
-  resize: vertical;
-  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
-  font-size: 0.9rem;
-  line-height: 1.45;
-  outline: none;
-  box-shadow: inset 0 0 0 1px rgba(15, 23, 42, 0.9);
-}
-
-.code-input:focus {
-  border-color: #4f46e5;
-  box-shadow:
-    0 0 0 1px rgba(129, 140, 248, 0.8),
-    0 0 25px rgba(79, 70, 229, 0.45),
-    inset 0 0 0 1px rgba(15, 23, 42, 0.9);
-}
-
 .controls-row {
   display: flex;
   align-items: center;
@@ -162,7 +137,7 @@ button:active {
 .field-group {
   display: flex;
   flex-direction: column;
-  gap: 4px;
+  gap: 6px;
   font-size: 0.85rem;
 }
 
@@ -173,25 +148,105 @@ button:active {
   font-size: 0.78rem;
 }
 
-.number-input {
+.number-input-wrapper {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
   background: rgba(15, 23, 42, 0.9);
   border-radius: 999px;
   border: 1px solid rgba(30, 64, 175, 0.8);
-  color: #e5e7eb;
-  padding: 7px 12px;
-  font-size: 0.9rem;
+  box-shadow: inset 0 0 0 1px rgba(15, 23, 42, 0.9);
   width: 150px;
+}
+
+.number-input {
+  background: transparent;
+  border-radius: 999px;
+  border: none;
+  color: #e5e7eb;
+  padding: 7px 38px 7px 12px; 
+  font-size: 0.9rem;
+  width: 100%;
   box-sizing: border-box;
   outline: none;
-  box-shadow: inset 0 0 0 1px rgba(15, 23, 42, 0.9);
+  /* убираем стандартные стрелки в большинстве браузеров */
+  -moz-appearance: textfield;
+  -webkit-appearance: none;
+  appearance: textfield;
 }
 
 .number-input:focus {
+  outline: none;
+}
+
+.number-input-wrapper:focus-within {
   border-color: #4f46e5;
   box-shadow:
     0 0 0 1px rgba(129, 140, 248, 0.8),
     0 0 20px rgba(79, 70, 229, 0.5),
     inset 0 0 0 1px rgba(15, 23, 42, 0.9);
+}
+
+/* полностью скрываем нативные стрелки в WebKit */
+input[type="number"]::-webkit-outer-spin-button,
+input[type="number"]::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.number-input-arrow {
+  position: absolute;
+  right: 4px;
+  width: 22px;
+  height: 14px;
+  padding: 0;
+  margin-right:4px;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  box-shadow:none;
+  justify-content: center;
+  transition:
+    background-color 0.12s ease-out,
+    transform 0.08s ease-out;
+}
+
+.number-input-arrow--up {
+  top: 3px;
+}
+
+.number-input-arrow--down {
+  bottom: 2px;
+}
+
+.number-input-arrow::before {
+  content: "";
+  display: block;
+  width: 14px;
+  height: 14px;
+  mask-size: 14px 14px;
+  mask-repeat: no-repeat;
+  mask-position: center;
+  background-color: #9ca3af;
+}
+
+.number-input-arrow--up::before {
+  mask-image: url("data:image/svg+xml,%3Csvg width='14' height='14' viewBox='0 0 20 20' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M5 12L10 7L15 12' stroke='black' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round' fill='none'/%3E%3C/svg%3E");
+}
+
+.number-input-arrow--down::before {
+  mask-image: url("data:image/svg+xml,%3Csvg width='14' height='14' viewBox='0 0 20 20' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M5 8L10 13L15 8' stroke='black' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round' fill='none'/%3E%3C/svg%3E");
+}
+
+.number-input-arrow:hover {
+  background-color: rgba(30, 64, 175, 0.4);
+}
+
+.number-input-arrow:active {
+  transform: translateY(1px);
+  background-color: rgba(30, 64, 175, 0.6);
 }
 
 .results {
@@ -204,10 +259,142 @@ button:active {
   white-space: pre-wrap;
 }
 
+.results-logs-row {
+  display: flex;
+  gap: 18px;
+  flex-wrap: wrap;
+}
+
+.results-card,
+.logs-card {
+  flex: 1 1 260px;
+  min-width: 0;
+}
+
+.logs-header {
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: #9ca3af;
+  margin-bottom: 6px;
+}
+
+.console-output {
+  margin-top: 4px;
+  padding: 10px 12px;
+  border-radius: 10px;
+  background: rgba(15, 23, 42, 0.95);
+  border: 1px solid rgba(30, 64, 175, 0.7);
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+  font-size: 0.8rem;
+  color: #e5e7eb;
+  white-space: pre-wrap;
+  max-height: 240px;
+  overflow: auto;
+  box-sizing: border-box;
+}
+
 .hint {
   margin-top: 10px;
   font-size: 0.78rem;
   color: #9ca3af;
+}
+
+.select-input {
+  background: rgba(15, 23, 42, 0.9);
+  border-radius: 999px;
+  border: 1px solid rgba(30, 64, 175, 0.8);
+  color: #e5e7eb;
+  padding: 7px 36px 7px 12px;
+  font-size: 0.9rem;
+  box-sizing: border-box;
+  outline: none;
+  box-shadow: inset 0 0 0 1px rgba(15, 23, 42, 0.9);
+  /* убираем стандартную стрелку */
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  /* кастомная стрелка */
+  background-image: url("data:image/svg+xml,%3Csvg width='14' height='14' viewBox='0 0 20 20' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M5 7L10 12L15 7' stroke='%239CA3AF' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 12px center;
+  background-size: 14px 14px;
+}
+
+.select-input:hover{
+   cursor:pointer;
+}
+
+.select-input:focus {
+  cursor:pointer;
+  border-color: #4f46e5;
+  box-shadow:
+    0 0 0 1px rgba(129, 140, 248, 0.8),
+    0 0 20px rgba(79, 70, 229, 0.5),
+    inset 0 0 0 1px rgba(15, 23, 42, 0.9);
+}
+
+/* скрываем стрелку в старых версиях Edge/IE */
+select.select-input::-ms-expand {
+  display: none;
+}
+
+/* CodeMirror integration */
+.CodeMirror {
+  width: 100%;
+  min-height: 230px;
+  border-radius: 14px;
+  border: 1px solid rgba(30, 64, 175, 0.8);
+  box-sizing: border-box;
+  padding: 8px 0;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+  font-size: 0.9rem;
+  line-height: 1.45;
+}
+
+.CodeMirror-focused {
+  border-color: #4f46e5;
+  box-shadow:
+    0 0 0 1px rgba(129, 140, 248, 0.8),
+    0 0 25px rgba(79, 70, 229, 0.45),
+    inset 0 0 0 1px rgba(15, 23, 42, 0.9);
+}
+
+.CodeMirror-gutters {
+  background: transparent;
+  border-right: 1px solid rgba(30, 64, 175, 0.65);
+}
+
+.CodeMirror-linenumber {
+  color: #6b7280;
+}
+
+.CodeMirror-cursor {
+  border-left: 2px solid #e5e7eb;
+}
+
+.checkbox-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 7px 12px;
+  background: rgba(15, 23, 42, 0.9);
+  border-radius: 999px;
+  border: 1px solid rgba(30, 64, 175, 0.8);
+  box-shadow: inset 0 0 0 1px rgba(15, 23, 42, 0.9);
+  font-size: 0.85rem;
+  color: #e5e7eb;
+}
+
+.checkbox-toggle input[type="checkbox"] {
+  width: 15px;
+  height: 15px;
+  accent-color: #4f46e5;
+  cursor: pointer;
+}
+
+.checkbox-toggle span {
+  cursor: pointer;
 }
 
 @media (max-width: 768px) {
@@ -220,6 +407,15 @@ button:active {
   .header {
     text-align: left;
   }
+}
+
+/* Убираем clip-path у редактора в темах darker dracula neo */
+.CodeMirror.cm-s-material-darker,
+.CodeMirror.cm-s-dracula,
+.CodeMirror.cm-s-neo,
+.cm-s-material-darker.CodeMirror-wrap,
+.cm-s-material-darker .CodeMirror-wrap {
+  clip-path: none !important;
 }
 
 
