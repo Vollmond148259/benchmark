@@ -178,19 +178,23 @@ button:active {
   position: relative;
   display: inline-flex;
   align-items: center;
-}
-
-.number-input {
   background: rgba(15, 23, 42, 0.9);
   border-radius: 999px;
   border: 1px solid rgba(30, 64, 175, 0.8);
-  color: #e5e7eb;
-  padding: 7px 38px 7px 12px;
-  font-size: 0.9rem;
+  box-shadow: inset 0 0 0 1px rgba(15, 23, 42, 0.9);
   width: 150px;
+}
+
+.number-input {
+  background: transparent;
+  border-radius: 999px;
+  border: none;
+  color: #e5e7eb;
+  padding: 7px 38px 7px 12px; 
+  font-size: 0.9rem;
+  width: 100%;
   box-sizing: border-box;
   outline: none;
-  box-shadow: inset 0 0 0 1px rgba(15, 23, 42, 0.9);
   /* убираем стандартные стрелки в большинстве браузеров */
   -moz-appearance: textfield;
   -webkit-appearance: none;
@@ -198,6 +202,10 @@ button:active {
 }
 
 .number-input:focus {
+  outline: none;
+}
+
+.number-input-wrapper:focus-within {
   border-color: #4f46e5;
   box-shadow:
     0 0 0 1px rgba(129, 140, 248, 0.8),
@@ -218,11 +226,13 @@ input[type="number"]::-webkit-inner-spin-button {
   width: 22px;
   height: 14px;
   padding: 0;
+  margin-right:4px;
   border: none;
   background: transparent;
   cursor: pointer;
   display: flex;
   align-items: center;
+  box-shadow:none;
   justify-content: center;
   transition:
     background-color 0.12s ease-out,
@@ -234,7 +244,7 @@ input[type="number"]::-webkit-inner-spin-button {
 }
 
 .number-input-arrow--down {
-  bottom: 3px;
+  bottom: 2px;
 }
 
 .number-input-arrow::before {
