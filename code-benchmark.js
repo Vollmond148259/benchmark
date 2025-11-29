@@ -1,9 +1,28 @@
 (function () {
-  const codeAEl = document.getElementById("code-a");
-  const codeBEl = document.getElementById("code-b");
+  const codeATextarea = document.getElementById("code-a");
+  const codeBTextarea = document.getElementById("code-b");
   const iterationsEl = document.getElementById("iterations");
   const runBtn = document.getElementById("run-benchmark");
   const resultsEl = document.getElementById("results");
+
+  // Инициализация CodeMirror для обоих редакторов
+  const codeAEditor = CodeMirror.fromTextArea(codeATextarea, {
+    mode: "javascript",
+    lineNumbers: true,
+    tabSize: 2,
+    indentUnit: 2,
+    indentWithTabs: false,
+    lineWrapping: true,
+  });
+
+  const codeBEditor = CodeMirror.fromTextArea(codeBTextarea, {
+    mode: "javascript",
+    lineNumbers: true,
+    tabSize: 2,
+    indentUnit: 2,
+    indentWithTabs: false,
+    lineWrapping: true,
+  });
 
   function setResults(text) {
     resultsEl.textContent = text;
@@ -66,8 +85,8 @@
   }
 
   function onRunBenchmark() {
-    const codeA = codeAEl.value || "";
-    const codeB = codeBEl.value || "";
+    const codeA = codeAEditor.getValue() || "";
+    const codeB = codeBEditor.getValue() || "";
     const iterations = parseIterations();
 
     setResults(
@@ -159,14 +178,19 @@
 
   runBtn.addEventListener("click", onRunBenchmark);
 
-  // Запуск по Ctrl/Cmd+Enter в любом редакторе
-  function handleKeydown(event) {
-    if ((event.metaKey || event.ctrlKey) && event.key === "Enter") {
-      event.preventDefault();
-      onRunBenchmark();
-    }
+  // Запуск по Ctrl/Cmd+Enter в любом редакторе CodeMirror
+  function attachCtrlEnter(editor) {
+    editor.on("keydown", function (cm, event) {
+      const isEnter =
+        event.key === "Enter" || event.keyCode === 13 || event.code === "Enter";
+
+      if ((event.metaKey || event.ctrlKey) && isEnter) {
+        event.preventDefault();
+        onRunBenchmark();
+      }
+    });
   }
 
-  codeAEl.addEventListener("keydown", handleKeydown);
-  codeBEl.addEventListener("keydown", handleKeydown);
+  attachCtrlEnter(codeAEditor);
+  attachCtrlEnter(codeBEditor);
 })();
