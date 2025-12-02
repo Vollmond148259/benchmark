@@ -26,13 +26,9 @@
 <body>
   <main class="layout">
     <header class="header">
-      <h1 class="header-title" data-i18n="ui_header_title">JS Benchmark Playground</h1>
-      <p class="header-subtitle" data-i18n="ui_header_subtitle">
-        Сравнивайте производительность двух вариантов JavaScript‑кода. Отредактируйте оба блока и нажмите
-        <code>Запустить бенчмарк</code>, чтобы увидеть статистику. Также вы можете запустить бенчмарк с помощью
-        сочетаний клавиш <code>Cmd+S</code> (macOS) или <code>Ctrl+S</code> (Windows/Linux).
-      </p>
-      <div
+      <div class="header_navigation">
+         <h1 class="header-title" data-i18n="ui_header_title">JS Benchmark Playground</h1>
+         <div
         id="lang-switcher"
         class="lang-switcher"
         role="group"
@@ -56,6 +52,14 @@
           EN
         </button>
       </div>
+      </div>
+     
+      <p class="header-subtitle" data-i18n="ui_header_subtitle">
+        Сравнивайте производительность двух вариантов JavaScript‑кода. Отредактируйте оба блока и нажмите
+        <code>Запустить бенчмарк</code>, чтобы увидеть статистику. Также вы можете запустить бенчмарк с помощью
+        сочетаний клавиш <code>Cmd+S</code> (macOS) или <code>Ctrl+S</code> (Windows/Linux).
+      </p>
+     
     </header>
 
     <section class="editors-row">
