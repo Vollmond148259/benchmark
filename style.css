@@ -36,7 +36,7 @@ body {
   position: absolute;
   top:0;
   left:0;
-  width:100%;
+  width:100vw;
   height:50px;
   z-index:100;
 
@@ -452,6 +452,23 @@ select.select-input::-ms-expand {
   }
   .header {
     text-align: left;
+  }
+
+  /* мобильная версия header_navigation */
+  .header_navigation {
+    justify-content: space-between;
+  }
+
+  .header-title {
+    font-size: 1.3rem;
+    letter-spacing: 0.03em;
+    text-align: left;
+    margin-left:16px;
+  }
+
+  .lang-switcher {
+    position: static;
+    
   }
 }
 
