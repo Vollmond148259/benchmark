@@ -2,6 +2,7 @@
 <html lang="ru">
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>JS Benchmark Playground</title>
   <link rel="stylesheet" href="style.css" />
   <!-- CodeMirror CSS -->
@@ -26,18 +27,46 @@
 <body>
   <main class="layout">
     <header class="header">
-      <h1 class="header-title">JS Benchmark Playground</h1>
-      <p class="header-subtitle">
+      <div class="header_navigation">
+         <h1 class="header-title" data-i18n="ui_header_title">JS Benchmark Playground</h1>
+         <div
+        id="lang-switcher"
+        class="lang-switcher"
+        role="group"
+        aria-label="Язык"
+        data-i18n-aria-label="ui_lang_switcher_label"
+      >
+        <button
+          type="button"
+          class="lang-switcher__btn lang-switcher__btn--active"
+          data-lang="ru"
+          aria-pressed="true"
+        >
+          RU
+        </button>
+        <button
+          type="button"
+          class="lang-switcher__btn"
+          data-lang="en"
+          aria-pressed="false"
+        >
+          EN
+        </button>
+      </div>
+      </div>
+     
+      <p class="header-subtitle" data-i18n="ui_header_subtitle">
         Сравнивайте производительность двух вариантов JavaScript‑кода. Отредактируйте оба блока и нажмите
         <code>Запустить бенчмарк</code>, чтобы увидеть статистику. Также вы можете запустить бенчмарк с помощью
         сочетаний клавиш <code>Cmd+S</code> (macOS) или <code>Ctrl+S</code> (Windows/Linux).
       </p>
+     
     </header>
 
     <section class="editors-row">
       <section class="card editor-card">
-        <h2>Вариант A</h2>
-        <p class="subtitle">
+        <h2 data-i18n="ui_variant_a_title">Вариант A</h2>
+        <p class="subtitle" data-i18n="ui_variant_a_subtitle">
           Например, классический цикл <code>for</code>, который суммирует элементы массива.
         </p>
         <textarea id="code-a" class="code-input" spellcheck="false">const arr = new Array(1_000).fill(1);
@@ -48,8 +77,8 @@ for (let i = 0; i &lt; arr.length; i++) {
       </section>
 
       <section class="card editor-card">
-        <h2>Вариант B</h2>
-        <p class="subtitle">
+        <h2 data-i18n="ui_variant_b_title">Вариант B</h2>
+        <p class="subtitle" data-i18n="ui_variant_b_subtitle">
           Альтернативная реализация той же задачи, например <code>Array.prototype.reduce</code>.
         </p>
         <textarea id="code-b" class="code-input" spellcheck="false">const arr = new Array(1_000).fill(1);
@@ -57,17 +86,19 @@ const sum = arr.reduce((acc, value) =&gt; acc + value, 0);</textarea>
       </section>
     </section>
 
-    <section class="card" style="display: flex; gap: 12px">
+    <section class="card controls-card">
       <div class="field-group">
-        <span class="field-label">Тема редактора</span>
+        <span class="field-label" data-i18n="ui_editor_theme_label">Тема редактора</span>
         <select id="editor-theme" class="select-input">
-          <option value="material-darker" selected>Тёмная — Material Darker</option>
-          <option value="dracula">Тёмная — Dracula</option>
-          <option value="neo">Светлая — Neo</option>
+          <option value="material-darker" selected data-i18n="ui_theme_option_material">
+            Тёмная — Material Darker
+          </option>
+          <option value="dracula" data-i18n="ui_theme_option_dracula">Тёмная — Dracula</option>
+          <option value="neo" data-i18n="ui_theme_option_neo">Светлая — Neo</option>
         </select>
       </div>
        <div class="field-group">
-          <span class="field-label">Количество итераций бенчмарка</span>
+          <span class="field-label" data-i18n="ui_iterations_label">Количество итераций</span>
           <div class="number-input-wrapper">
             <input
               id="iterations"
@@ -82,34 +113,37 @@ const sum = arr.reduce((acc, value) =&gt; acc + value, 0);</textarea>
               type="button"
               class="number-input-arrow number-input-arrow--up"
               aria-label="Увеличить количество итераций"
+              data-i18n-aria-label="ui_iterations_increase_aria"
             ></button>
             <button
               type="button"
               class="number-input-arrow number-input-arrow--down"
               aria-label="Уменьшить количество итераций"
+              data-i18n-aria-label="ui_iterations_decrease_aria"
             ></button>
           </div>
         </div>
         <div class="field-group">
-          <span class="field-label">Дополнительно</span>
+          <span class="field-label" data-i18n="ui_additional_label">Дополнительно</span>
           <label class="checkbox-toggle">
             <input
               type="checkbox"
               id="cyrillic-sound-toggle"
               checked
             />
-            <span>Звуковой сигнал при вводе кириллицы в редакторе</span>
+            <span data-i18n="ui_cyrillic_toggle_label">Звуковой сигнал при вводе кириллицы в редакторе</span>
           </label>
         </div>
     </section>
 
     <section class="card">
       <div class="controls-row">
-       
+        <button id="run-benchmark" data-i18n="ui_run_button">Запустить бенчмарк</button>
 
-        <button id="run-benchmark">Запустить бенчмарк</button>
-
-        <p style="margin: 0; font-size: 0.8rem; color: #6b7280;">
+        <p
+          style="margin: 0; font-size: 0.8rem; color: #6b7280;"
+          data-i18n="ui_hint_text"
+        >
           Совет: начните с меньшего числа итераций, если браузер «подвисает».
         </p>
       </div>
@@ -117,17 +151,19 @@ const sum = arr.reduce((acc, value) =&gt; acc + value, 0);</textarea>
 
     <section class="results-logs-row">
       <section class="card results-card">
-        <h2>Результаты бенчмарка</h2>
-        <div id="results" class="results">Здесь появятся результаты выполнения кода.</div>
-        <div class="hint">
+        <h2 data-i18n="ui_results_title">Результаты бенчмарка</h2>
+        <div id="results" class="results" data-i18n="ui_results_placeholder">
+          Здесь появятся результаты выполнения кода.
+        </div>
+        <div class="hint" data-i18n="ui_results_hint">
           Запустите тест несколько раз и попробуйте разные браузеры (Chrome, Firefox, Safari), чтобы увидеть, как
           движок влияет на производительность.
         </div>
       </section>
 
       <section class="card logs-card">
-        <div class="logs-header">Логи консоли</div>
-        <div id="console-output" class="console-output">
+        <div class="logs-header" data-i18n="ui_logs_header">Логи консоли</div>
+        <div id="console-output" class="console-output" data-i18n="ui_console_placeholder">
           Здесь появится вывод <code>console.log</code> и <code>console.debug</code> за последний запуск.
         </div>
       </section>

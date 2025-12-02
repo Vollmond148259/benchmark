@@ -11,6 +11,258 @@
     ".number-input-arrow--down"
   );
   const cyrillicSoundToggle = document.getElementById("cyrillic-sound-toggle");
+  const langSwitcherRoot = document.getElementById("lang-switcher");
+
+  const translations = {
+    ru: {
+      page_title: "JS Benchmark Playground",
+      ui_header_title: "JS Benchmark Playground",
+      ui_header_subtitle:
+        "Сравнивайте производительность двух вариантов JavaScript‑кода. Отредактируйте оба блока и нажмите <code>Запустить бенчмарк</code>, чтобы увидеть статистику. Также вы можете запустить бенчмарк с помощью сочетаний клавиш <code>Cmd+S</code> (macOS) или <code>Ctrl+S</code> (Windows/Linux).",
+      ui_lang_switcher_label: "Язык",
+      ui_variant_a_title: "Вариант A",
+      ui_variant_a_subtitle:
+        "Например, классический цикл <code>for</code>, который суммирует элементы массива.",
+      ui_variant_b_title: "Вариант B",
+      ui_variant_b_subtitle:
+        "Альтернативная реализация той же задачи, например <code>Array.prototype.reduce</code>.",
+      ui_editor_theme_label: "Тема редактора",
+      ui_theme_option_material: "Тёмная — Material Darker",
+      ui_theme_option_dracula: "Тёмная — Dracula",
+      ui_theme_option_neo: "Светлая — Neo",
+      ui_iterations_label: "Количество итераций",
+      ui_iterations_increase_aria: "Увеличить количество итераций",
+      ui_iterations_decrease_aria: "Уменьшить количество итераций",
+      ui_additional_label: "Дополнительно",
+      ui_cyrillic_toggle_label:
+        "Звуковой сигнал при вводе кириллицы в редакторе",
+      ui_run_button: "Запустить бенчмарк",
+      ui_hint_text:
+        "Совет: начните с меньшего числа итераций, если браузер «подвисает».",
+      ui_results_title: "Результаты бенчмарка",
+      ui_results_placeholder: "Здесь появятся результаты выполнения кода.",
+      ui_results_hint:
+        "Запустите тест несколько раз и попробуйте разные браузеры (Chrome, Firefox, Safari), чтобы увидеть, как движок влияет на производительность.",
+      ui_logs_header: "Логи консоли",
+      ui_console_placeholder:
+        "Здесь появится вывод <code>console.log</code> и <code>console.debug</code> за последний запуск.",
+
+      msg_benchmark_running:
+        "Выполняется бенчмарк...\nЭто может занять немного времени при большом числе итераций.",
+      msg_console_waiting:
+        "Ожидание вывода из console.log / console.debug во время текущего запуска...",
+      msg_parse_errors_header:
+        "Не удалось запустить бенчмарк из‑за ошибок в коде:\n\n",
+      msg_console_not_run_due_to_errors:
+        "Из‑за ошибок в коде бенчмарк не был запущен, вывод консоли отсутствует.",
+      msg_execution_errors_header:
+        "Во время выполнения кода произошли ошибки:\n\n",
+      msg_execution_errors_no_console:
+        "Во время выполнения произошли ошибки, но вызовов console.log / console.debug не было.",
+      msg_no_console_calls:
+        "За этот запуск вызовов console.log / console.debug не было.",
+      msg_iterations_label: "Итераций",
+      msg_results_variant_a_title: "Вариант A:",
+      msg_results_variant_b_title: "Вариант B:",
+      msg_results_total_time_label: "  Общее время:      ",
+      msg_results_per_iteration_label: "  На итерацию:      ",
+      msg_summary_both_equal:
+        "Итог: оба варианта показывают примерно одинаковое время выполнения.",
+      msg_summary_prefix: "Итог: вариант ",
+      msg_summary_middle: " быстрее варианта ",
+      msg_summary_suffix_prefix: " примерно в ",
+      msg_summary_suffix_times: " раза.",
+      msg_error_parse_prefix: "Ошибка при разборе кода ",
+      msg_error_execution_prefix: "Ошибка во время выполнения кода ",
+      code_variant_a_genitive: "варианта A",
+      code_variant_b_genitive: "варианта B",
+    },
+    en: {
+      page_title: "JS Benchmark Playground",
+      ui_header_title: "JS Benchmark Playground",
+      ui_header_subtitle:
+        "Compare performance of two JavaScript code variants. Edit both blocks and press <code>Run benchmark</code> to see statistics. You can also run the benchmark with <code>Cmd+S</code> (macOS) or <code>Ctrl+S</code> (Windows/Linux).",
+      ui_lang_switcher_label: "Language",
+      ui_variant_a_title: "Variant A",
+      ui_variant_a_subtitle:
+        "For example, a classic <code>for</code> loop that sums array elements.",
+      ui_variant_b_title: "Variant B",
+      ui_variant_b_subtitle:
+        "Alternative implementation of the same task, e.g. <code>Array.prototype.reduce</code>.",
+      ui_editor_theme_label: "Editor theme",
+      ui_theme_option_material: "Dark — Material Darker",
+      ui_theme_option_dracula: "Dark — Dracula",
+      ui_theme_option_neo: "Light — Neo",
+      ui_iterations_label: "Iterations count",
+      ui_iterations_increase_aria: "Increase iterations count",
+      ui_iterations_decrease_aria: "Decrease iterations count",
+      ui_additional_label: "Additional",
+      ui_cyrillic_toggle_label:
+        "Play a sound when Cyrillic characters are typed in the editor",
+      ui_run_button: "Run benchmark",
+      ui_hint_text:
+        "Tip: start with fewer iterations if the browser feels sluggish.",
+      ui_results_title: "Benchmark results",
+      ui_results_placeholder: "Benchmark results will appear here.",
+      ui_results_hint:
+        "Run the test multiple times and try different browsers (Chrome, Firefox, Safari) to see how the engine affects performance.",
+      ui_logs_header: "Console logs",
+      ui_console_placeholder:
+        "Output of <code>console.log</code> and <code>console.debug</code> from the last run will appear here.",
+
+      msg_benchmark_running:
+        "Benchmark is running...\nThis may take some time with a large number of iterations.",
+      msg_console_waiting:
+        "Waiting for console.log / console.debug output during the current run...",
+      msg_parse_errors_header:
+        "Failed to start the benchmark due to errors in the code:\n\n",
+      msg_console_not_run_due_to_errors:
+        "The benchmark was not started because of code errors, so there is no console output.",
+      msg_execution_errors_header:
+        "Errors occurred while executing the code:\n\n",
+      msg_execution_errors_no_console:
+        "Errors occurred during execution, but there were no console.log / console.debug calls.",
+      msg_no_console_calls:
+        "There were no console.log / console.debug calls during this run.",
+      msg_iterations_label: "Iterations",
+      msg_results_variant_a_title: "Variant A:",
+      msg_results_variant_b_title: "Variant B:",
+      msg_results_total_time_label: "  Total time:       ",
+      msg_results_per_iteration_label: "  Per iteration:    ",
+      msg_summary_both_equal:
+        "Summary: both variants show roughly the same execution time.",
+      msg_summary_prefix: "Summary: variant ",
+      msg_summary_middle: " is faster than variant ",
+      msg_summary_suffix_prefix: " by about ",
+      msg_summary_suffix_times: " times.",
+      msg_error_parse_prefix: "Error while parsing code ",
+      msg_error_execution_prefix: "Error during execution of code ",
+      code_variant_a_genitive: "variant A",
+      code_variant_b_genitive: "variant B",
+    },
+  };
+
+  let currentLang = "ru";
+
+  function getCurrentLocale() {
+    if (currentLang === "en") return "en-US";
+    return "ru-RU";
+  }
+
+  function t(key) {
+    const dict = translations[currentLang] || translations.ru;
+    if (dict && Object.prototype.hasOwnProperty.call(dict, key)) {
+      return dict[key];
+    }
+    const fallback = translations.ru;
+    if (fallback && Object.prototype.hasOwnProperty.call(fallback, key)) {
+      return fallback[key];
+    }
+    return key;
+  }
+
+  function applyTranslations(lang) {
+    currentLang = translations[lang] ? lang : currentLang;
+
+    const docEl = document.documentElement;
+    if (docEl) {
+      docEl.lang = currentLang;
+    }
+
+    const pageTitle = translations[currentLang].page_title;
+    if (typeof pageTitle === "string") {
+      document.title = pageTitle;
+    }
+
+    const textNodes = document.querySelectorAll("[data-i18n]");
+    textNodes.forEach((el) => {
+      const key = el.getAttribute("data-i18n");
+      if (!key) return;
+      const value = t(key);
+      if (typeof value === "string") {
+        el.innerHTML = value;
+      }
+    });
+
+    const ariaLabelNodes = document.querySelectorAll("[data-i18n-aria-label]");
+    ariaLabelNodes.forEach((el) => {
+      const key = el.getAttribute("data-i18n-aria-label");
+      if (!key) return;
+      const value = t(key);
+      if (typeof value === "string") {
+        el.setAttribute("aria-label", value);
+      }
+    });
+  }
+
+  function updateLangSwitcherUI() {
+    if (!langSwitcherRoot) return;
+    const buttons = langSwitcherRoot.querySelectorAll("[data-lang]");
+    buttons.forEach((btn) => {
+      const btnLang = btn.getAttribute("data-lang");
+      const isActive = btnLang === currentLang;
+      btn.classList.toggle("lang-switcher__btn--active", isActive);
+      btn.setAttribute("aria-pressed", isActive ? "true" : "false");
+    });
+  }
+
+  function setLanguage(lang, options) {
+    const opts = options || {};
+    const targetLang = translations[lang] ? lang : currentLang;
+    currentLang = targetLang;
+
+    if (!opts.skipSave) {
+      try {
+        window.localStorage.setItem("benchmark_lang", currentLang);
+      } catch (_e) {
+        // ignore
+      }
+    }
+
+    applyTranslations(currentLang);
+    updateLangSwitcherUI();
+  }
+
+  function detectInitialLanguage() {
+    try {
+      const stored = window.localStorage.getItem("benchmark_lang");
+      if (stored && translations[stored]) {
+        return stored;
+      }
+    } catch (_e) {
+      // ignore
+    }
+
+    const docLang = (document.documentElement.lang || "").toLowerCase();
+    if (docLang && translations[docLang.slice(0, 2)]) {
+      return docLang.slice(0, 2);
+    }
+
+    const navLangs = window.navigator
+      ? window.navigator.languages || [window.navigator.language]
+      : [];
+    for (const l of navLangs) {
+      if (!l) continue;
+      const code = l.toLowerCase().slice(0, 2);
+      if (translations[code]) {
+        return code;
+      }
+    }
+
+    return "ru";
+  }
+
+  function attachLangSwitcherHandlers() {
+    if (!langSwitcherRoot) return;
+    const buttons = langSwitcherRoot.querySelectorAll("[data-lang]");
+    buttons.forEach((btn) => {
+      btn.addEventListener("click", function () {
+        const lang = btn.getAttribute("data-lang");
+        if (!lang || lang === currentLang) return;
+        setLanguage(lang, { skipSave: false });
+      });
+    });
+  }
 
   // Инициализация CodeMirror для обоих редакторов
   const codeAEditor = CodeMirror.fromTextArea(codeATextarea, {
@@ -121,9 +373,14 @@
       const fn = new Function("console", code);
       return { fn, error: null };
     } catch (e) {
+      const labelText =
+        label === "A"
+          ? t("code_variant_a_genitive")
+          : t("code_variant_b_genitive");
       return {
         fn: null,
-        error: "Ошибка при разборе кода " + label + ": " + e.message,
+        error:
+          t("msg_error_parse_prefix") + labelText + ": " + (e && e.message),
       };
     }
   }
@@ -136,8 +393,13 @@
         fn(consoleForFn);
       }
     } catch (e) {
+      const labelText =
+        label === "A"
+          ? t("code_variant_a_genitive")
+          : t("code_variant_b_genitive");
       return {
-        error: "Ошибка во время выполнения кода " + label + ": " + e.message,
+        error:
+          t("msg_error_execution_prefix") + labelText + ": " + (e && e.message),
       };
     }
     const end = performance.now();
@@ -160,31 +422,25 @@
     const codeB = codeBEditor.getValue() || "";
     const iterations = parseIterations();
 
-    setResults(
-      "Выполняется бенчмарк...\nЭто может занять немного времени при большом числе итераций."
-    );
+    setResults(t("msg_benchmark_running"));
 
     // Очищаем лог консоли перед новым запуском
     if (consoleOutputEl) {
-      setConsoleOutput(
-        "Ожидание вывода из console.log / console.debug во время текущего запуска..."
-      );
+      setConsoleOutput(t("msg_console_waiting"));
     }
 
     // Небольшая задержка, чтобы обновить UI перед тяжёлой работой
     setTimeout(() => {
-      const buildA = buildFunction(codeA, "варианта A");
-      const buildB = buildFunction(codeB, "варианта B");
+      const buildA = buildFunction(codeA, "A");
+      const buildB = buildFunction(codeB, "B");
 
       if (buildA.error || buildB.error) {
-        let msg = "Не удалось запустить бенчмарк из‑за ошибок в коде:\n\n";
+        let msg = t("msg_parse_errors_header");
         if (buildA.error) msg += "- " + buildA.error + "\n";
         if (buildB.error) msg += "- " + buildB.error + "\n";
         setResults(msg.trimEnd());
         if (consoleOutputEl) {
-          setConsoleOutput(
-            "Из‑за ошибок в коде бенчмарк не был запущен, вывод консоли отсутствует."
-          );
+          setConsoleOutput(t("msg_console_not_run_due_to_errors"));
         }
         scrollToResults();
         return;
@@ -210,7 +466,7 @@
       }
 
       function pushConsoleLine(kind, variantLabel, args) {
-        const time = new Date().toLocaleTimeString("ru-RU");
+        const time = new Date().toLocaleTimeString(getCurrentLocale());
         const text =
           "[" +
           time +
@@ -273,32 +529,38 @@
       const consoleB = makeInstrumentedConsole("B");
 
       const resultA = measure(buildA.fn, iterations, "варианта A", consoleA);
-      const resultB = measure(buildB.fn, iterations, "варианта B", consoleB);
+      const resultB = measure(buildB.fn, iterations, "B", consoleB);
 
       if (resultA.error || resultB.error) {
-        let msg = "Во время выполнения кода произошли ошибки:\n\n";
+        let msg = t("msg_execution_errors_header");
         if (resultA.error) msg += "- " + resultA.error + "\n";
         if (resultB.error) msg += "- " + resultB.error + "\n";
         setResults(msg.trimEnd());
         if (consoleOutputEl && consoleLines.length === 0) {
-          setConsoleOutput(
-            "Во время выполнения произошли ошибки, но вызовов console.log / console.debug не было."
-          );
+          setConsoleOutput(t("msg_execution_errors_no_console"));
         }
         scrollToResults();
         return;
       }
 
       const lines = [];
-      lines.push("Итераций: " + iterations.toLocaleString("ru-RU"));
+      lines.push(
+        t("msg_iterations_label") +
+          ": " +
+          iterations.toLocaleString(getCurrentLocale())
+      );
       lines.push("");
-      lines.push("Вариант A:");
-      lines.push("  Общее время:      " + formatMs(resultA.totalMs));
-      lines.push("  На итерацию:      " + formatMs(resultA.avgMs));
+      lines.push(t("msg_results_variant_a_title"));
+      lines.push(t("msg_results_total_time_label") + formatMs(resultA.totalMs));
+      lines.push(
+        t("msg_results_per_iteration_label") + formatMs(resultA.avgMs)
+      );
       lines.push("");
-      lines.push("Вариант B:");
-      lines.push("  Общее время:      " + formatMs(resultB.totalMs));
-      lines.push("  На итерацию:      " + formatMs(resultB.avgMs));
+      lines.push(t("msg_results_variant_b_title"));
+      lines.push(t("msg_results_total_time_label") + formatMs(resultB.totalMs));
+      lines.push(
+        t("msg_results_per_iteration_label") + formatMs(resultB.avgMs)
+      );
       lines.push("");
 
       const totalA = resultA.totalMs;
@@ -326,27 +588,23 @@
         if (fasterLabel) {
           const slowerLabel = fasterLabel === "A" ? "B" : "A";
           lines.push(
-            "Итог: вариант " +
+            t("msg_summary_prefix") +
               fasterLabel +
-              " быстрее варианта " +
+              t("msg_summary_middle") +
               slowerLabel +
-              " примерно в " +
+              t("msg_summary_suffix_prefix") +
               factor.toFixed(2) +
-              " раза."
+              t("msg_summary_suffix_times")
           );
         } else {
-          lines.push(
-            "Итог: оба варианта показывают примерно одинаковое время выполнения."
-          );
+          lines.push(t("msg_summary_both_equal"));
         }
       }
 
       setResults(lines.join("\n"));
 
       if (consoleOutputEl && consoleLines.length === 0) {
-        setConsoleOutput(
-          "За этот запуск вызовов console.log / console.debug не было."
-        );
+        setConsoleOutput(t("msg_no_console_calls"));
       }
       scrollToResults();
     }, 30);
@@ -407,4 +665,9 @@
       stepIterations(-1);
     });
   }
+
+  const initialLang = detectInitialLanguage();
+  applyTranslations(initialLang);
+  updateLangSwitcherUI();
+  attachLangSwitcherHandlers();
 })();
