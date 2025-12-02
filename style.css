@@ -397,6 +397,34 @@ select.select-input::-ms-expand {
   cursor: pointer;
 }
 
+.lang-switcher {
+  margin-top: 12px;
+  display: inline-flex;
+  gap: 6px;
+  padding: 3px;
+  border-radius: 999px;
+  background: rgba(15, 23, 42, 0.85);
+  border: 1px solid rgba(148, 163, 184, 0.4);
+}
+
+.lang-switcher__btn {
+  padding: 4px 10px;
+  font-size: 0.78rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  background-image: none;
+  background-color: transparent;
+  box-shadow: none;
+}
+
+.lang-switcher__btn--active {
+  background-image: none;
+  background-color: #4f46e5;
+  box-shadow:
+    0 0 0 1px rgba(248, 250, 252, 0.2),
+    0 8px 20px rgba(15, 23, 42, 0.9);
+}
+
 @media (max-width: 768px) {
   body {
     align-items: flex-start;
