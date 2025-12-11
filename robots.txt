@@ -1,0 +1,5 @@
+User-agent: *
+Allow: /
+
+# Добавьте строку Sitemap после деплоя на домен, например:
+# Sitemap: https://example.com/sitemap.xml

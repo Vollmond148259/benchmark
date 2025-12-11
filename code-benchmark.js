@@ -15,7 +15,8 @@
 
   const translations = {
     ru: {
-      page_title: "JS Benchmark Playground",
+      page_title:
+        "JS Benchmark Playground — сравнить скорость кода в онлайн редакторе JavaScript",
       ui_header_title: "JS Benchmark Playground",
       ui_header_subtitle:
         "Сравнивайте производительность двух вариантов JavaScript‑кода. Отредактируйте оба блока и нажмите <code>Запустить бенчмарк</code>, чтобы увидеть статистику. Также вы можете запустить бенчмарк с помощью сочетаний клавиш <code>Cmd+S</code> (macOS) или <code>Ctrl+S</code> (Windows/Linux).",
@@ -78,7 +79,8 @@
       code_variant_b_genitive: "варианта B",
     },
     en: {
-      page_title: "JS Benchmark Playground",
+      page_title:
+        "JS Benchmark Playground — JS playground & online JavaScript editor",
       ui_header_title: "JS Benchmark Playground",
       ui_header_subtitle:
         "Compare performance of two JavaScript code variants. Edit both blocks and press <code>Run benchmark</code> to see statistics. You can also run the benchmark with <code>Cmd+S</code> (macOS) or <code>Ctrl+S</code> (Windows/Linux).",
